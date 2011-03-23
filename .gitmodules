@@ -1,0 +1,3 @@
+[submodule "android-api"]
+	path = android-api
+	url = git@github.com:hoccer/android-api.git
