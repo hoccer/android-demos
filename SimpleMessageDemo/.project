@@ -30,4 +30,16 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>android-api_java-api_src</name>
+			<type>2</type>
+			<locationURI>_android_android_api_37cf55bc/java-api/src</locationURI>
+		</link>
+		<link>
+			<name>android-api_src</name>
+			<type>2</type>
+			<locationURI>_android_android_api_37cf55bc/src</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
