@@ -18,7 +18,6 @@ import com.hoccer.api.ClientConfig;
 import com.hoccer.api.EnvironmentStatus;
 import com.hoccer.api.android.AsyncLinccer;
 import com.hoccer.api.android.LinccLocationManager;
-import com.hoccer.api.android.AsyncLinccer.MessageType;
 
 public class SimpleMessageDemo extends Activity {
     private LinccLocationManager mLocationManager;
@@ -71,13 +70,17 @@ public class SimpleMessageDemo extends Activity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(SimpleMessageDemo.this, "received " + payload,
-                                            Toast.LENGTH_LONG).show();
+                                    TextView messages = (TextView) findViewById(R.id.messages);
+                                    try {
+                                        messages.append(payload.getString("message") + "\n");
+                                    } catch (JSONException e) {
+                                        Toast.makeText(SimpleMessageDemo.this, e.getMessage(),
+                                                Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             });
                         }
                     } catch (Exception e) {
-
                     }
                 }
             };
@@ -89,17 +92,15 @@ public class SimpleMessageDemo extends Activity {
             mLinccer.asyncShare("one-to-many", new JSONObject("{message : '" + text + "'}"),
                     new Handler() {
                         @Override
-                        public void handleMessage(Message msg) {
+                        public void handleMessage(final Message msg) {
                             super.handleMessage(msg);
-                            if (msg.what != MessageType.SHARED) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(SimpleMessageDemo.this, "sending failed",
-                                                Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                            }
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SimpleMessageDemo.this, "what? " + msg.what,
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                     });
         } catch (JSONException e) {
