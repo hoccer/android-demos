@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:padding="3dip"
+    android:gravity="fill_vertical"
     >
 
 <TextView  
@@ -13,22 +14,36 @@
     />
 
 <TextView
+    android:layout_below="@id/status"
     android:layout_width="fill_parent" 
-    android:layout_height="fill_parent"
-    android:background="#999"
+    android:layout_height="wrap_content"
+    android:minLines="5"
+    android:maxLines="5"
+    android:background="#DDD"
     android:textSize="20dip"
-    android:layout_marginTop="30dip" 
-    android:layout_marginBottom="60dip"
     android:id="@+id/messages"
-    android:gravity="top"
+    android:layout_marginTop="30dip" 
+    android:layout_marginBottom="10dip"
+    />
+
+<Button
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content"
+    android:text="Send"
+    android:id="@+id/send"
+    android:layout_below="@id/messages"
+    android:singleLine="true"
+    android:layout_alignParentRight="true"
     />
 
 <EditText  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
+    android:inputType="textShortMessage"
+    android:layout_below="@id/messages"
+    android:layout_alignParentLeft="true"
     android:id="@+id/new_message"
+    android:layout_toLeftOf="@id/send"
     />
-
 
 </RelativeLayout>
