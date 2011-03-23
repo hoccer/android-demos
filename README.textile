@@ -1,7 +1,6 @@
 h1. Setup
 
-bc.. 
-git clone git@github.com:hoccer/android-demos.git
+bc.. git clone git@github.com:hoccer/android-demos.git
 cd android-demos
 git submodule update --init --recursive
 
