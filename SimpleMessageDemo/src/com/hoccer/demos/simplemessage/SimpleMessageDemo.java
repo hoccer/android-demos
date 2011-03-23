@@ -13,6 +13,7 @@ import com.hoccer.api.android.LinccLocationManager;
 public class SimpleMessageDemo extends Activity {
     private LinccLocationManager mLocationManager;
     private AsyncLinccer         mLinccer;
+    private Thread               mUpdateThread;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class SimpleMessageDemo extends Activity {
         updateStatus();
         mLocationManager.activate();
 
-        new Thread() {
+        mUpdateThread = new Thread() {
             @Override
             public void run() {
                 try {
@@ -39,12 +40,15 @@ public class SimpleMessageDemo extends Activity {
                     updateStatus();
 
                     Thread.sleep(10 * 1000);
+                } catch (InterruptedException e) {
+                    return;
                 } catch (Exception e) {
                     Toast.makeText(SimpleMessageDemo.this, e.getMessage(), Toast.LENGTH_LONG)
                             .show();
                 }
             }
-        }.start();
+        };
+        mUpdateThread.start();
 
         super.onResume();
     }
@@ -52,6 +56,7 @@ public class SimpleMessageDemo extends Activity {
     @Override
     protected void onPause() {
         mLocationManager.deactivate();
+        mUpdateThread.interrupt();
         super.onPause();
     }
 
