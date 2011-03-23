@@ -49,6 +49,7 @@ public class SimpleMessageDemo extends Activity {
     @Override
     protected void onResume() {
         startLocationUpdates();
+        startWatchingForMessages();
         super.onResume();
     }
 
@@ -56,6 +57,31 @@ public class SimpleMessageDemo extends Activity {
     protected void onPause() {
         stopLocationUpdates();
         super.onPause();
+    }
+
+    private void startWatchingForMessages() {
+        new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        final JSONObject payload = mLinccer.receive("one-to-many", "waiting=true");
+
+                        if (payload != null) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SimpleMessageDemo.this, "received " + payload,
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+
+                    }
+                }
+            };
+        }.start();
     }
 
     private void sendMessage(String text) {
@@ -67,7 +93,6 @@ public class SimpleMessageDemo extends Activity {
                             super.handleMessage(msg);
                             if (msg.what != MessageType.SHARED) {
                                 runOnUiThread(new Runnable() {
-
                                     @Override
                                     public void run() {
                                         Toast.makeText(SimpleMessageDemo.this, "sending failed",
@@ -89,16 +114,18 @@ public class SimpleMessageDemo extends Activity {
         mUpdateThread = new Thread() {
             @Override
             public void run() {
-                try {
-                    mLocationManager.refreshLocation();
-                    updateStatus();
+                while (true) {
+                    try {
+                        mLocationManager.refreshLocation();
+                        updateStatus();
 
-                    Thread.sleep(10 * 1000);
-                } catch (InterruptedException e) {
-                    return;
-                } catch (Exception e) {
-                    Toast.makeText(SimpleMessageDemo.this, e.getMessage(), Toast.LENGTH_LONG)
-                            .show();
+                        Thread.sleep(10 * 1000);
+                    } catch (InterruptedException e) {
+                        return;
+                    } catch (Exception e) {
+                        Toast.makeText(SimpleMessageDemo.this, e.getMessage(), Toast.LENGTH_LONG)
+                                .show();
+                    }
                 }
             }
         };
