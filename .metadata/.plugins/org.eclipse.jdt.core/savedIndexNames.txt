@@ -1,8 +1,0 @@
-INDEX VERSION 1.126+/home/rodja/Hoccer/android-demos/.metadata/.plugins/org.eclipse.jdt.core
-2891581663.index
-2656402549.index
-619293704.index
-683373922.index
-2916369887.index
-3186468930.index
-3605021188.index
