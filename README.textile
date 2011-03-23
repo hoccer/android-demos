@@ -1,7 +1,8 @@
-# Setup
+h1. Setup
 
-bc.
+bc..
 git clone git@github.com:hoccer/android-demos.git
 cd android-demos
 git submodule update --init --recursive
 
+p. The android-api is included as a submodule and provides an Android Library Project which is used by the Demo Apps
