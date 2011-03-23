@@ -29,9 +29,18 @@ public class SimpleMessageDemo extends Activity {
 
     @Override
     protected void onResume() {
-        updateStatus();
-        mLocationManager.activate();
+        startLocationUpdates();
 
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        stopLocationUpdates();
+        super.onPause();
+    }
+
+    private void startLocationUpdates() {
         mUpdateThread = new Thread() {
             @Override
             public void run() {
@@ -49,18 +58,16 @@ public class SimpleMessageDemo extends Activity {
             }
         };
         mUpdateThread.start();
-
-        super.onResume();
     }
 
-    @Override
-    protected void onPause() {
+    private void stopLocationUpdates() {
         mLocationManager.deactivate();
         mUpdateThread.interrupt();
-        super.onPause();
     }
 
     private void updateStatus() {
+        updateStatus();
+        mLocationManager.activate();
 
         runOnUiThread(new Runnable() {
 
