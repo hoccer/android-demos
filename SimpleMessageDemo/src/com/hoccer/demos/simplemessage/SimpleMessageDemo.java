@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,9 +21,10 @@ import com.hoccer.api.android.AsyncLinccer;
 import com.hoccer.api.android.LinccLocationManager;
 
 public class SimpleMessageDemo extends Activity {
-    private LinccLocationManager mLocationManager;
-    private AsyncLinccer         mLinccer;
-    private Thread               mUpdateThread;
+    protected static final String TAG = "SimpleMessageDemo";
+    private LinccLocationManager  mLocationManager;
+    private AsyncLinccer          mLinccer;
+    private Thread                mUpdateThread;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class SimpleMessageDemo extends Activity {
 
         ClientConfig config = new ClientConfig("SimpleMessageDemo/Android",
                 "e101e890ea97012d6b6f00163e001ab0", "JofbFD6w6xtNYdaDgp4KOXf/k/s=");
-
+        ClientConfig.useBetaServers();
         mLinccer = new AsyncLinccer(config);
         mLocationManager = new LinccLocationManager(this, mLinccer);
 
@@ -89,20 +91,22 @@ public class SimpleMessageDemo extends Activity {
 
     private void sendMessage(String text) {
         try {
-            mLinccer.asyncShare("one-to-many", new JSONObject("{message : '" + text + "'}"),
-                    new Handler() {
+            JSONObject json = new JSONObject();
+            json.put("message", text);
+
+            mLinccer.asyncShare("one-to-many", json, new Handler() {
+                @Override
+                public void handleMessage(final Message msg) {
+                    super.handleMessage(msg);
+                    runOnUiThread(new Runnable() {
                         @Override
-                        public void handleMessage(final Message msg) {
-                            super.handleMessage(msg);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(SimpleMessageDemo.this, "what? " + msg.what,
-                                            Toast.LENGTH_LONG).show();
-                                }
-                            });
+                        public void run() {
+                            Toast.makeText(SimpleMessageDemo.this, "what? " + msg.what,
+                                    Toast.LENGTH_LONG).show();
                         }
                     });
+                }
+            });
         } catch (JSONException e) {
             Toast.makeText(SimpleMessageDemo.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -123,9 +127,19 @@ public class SimpleMessageDemo extends Activity {
                         Thread.sleep(10 * 1000);
                     } catch (InterruptedException e) {
                         return;
-                    } catch (Exception e) {
-                        Toast.makeText(SimpleMessageDemo.this, e.getMessage(), Toast.LENGTH_LONG)
-                                .show();
+                    } catch (final Exception e) {
+
+                        Log.wtf(TAG, e);
+
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                Toast.makeText(SimpleMessageDemo.this, e.getMessage(),
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+
                     }
                 }
             }
