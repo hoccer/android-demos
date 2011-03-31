@@ -33,7 +33,7 @@ public class SimpleMessageDemo extends Activity {
 
         ClientConfig config = new ClientConfig("SimpleMessageDemo/Android",
                 "e101e890ea97012d6b6f00163e001ab0", "JofbFD6w6xtNYdaDgp4KOXf/k/s=");
-        ClientConfig.useBetaServers();
+
         mLinccer = new AsyncLinccer(config);
         mLocationManager = new LinccLocationManager(this, mLinccer);
 
