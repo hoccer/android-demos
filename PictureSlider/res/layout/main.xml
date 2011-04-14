@@ -3,11 +3,26 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:padding="3dip"
+    android:gravity="fill_vertical"
     >
+    <Button
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content"
+    android:text="Send"
+    android:id="@+id/send"
+    android:padding="5px"
+    
+    
+    
+    
+    />
+    
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     android:text="@string/hello"
+    
     />
     
     <ImageView 
@@ -15,5 +30,14 @@
     android:layout_height = "fill_parent"
     android:id="@+id/image"
     />
+    
+    <TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:id="@+id/status"
+    
+    />
+    
+   
     
 </LinearLayout>
